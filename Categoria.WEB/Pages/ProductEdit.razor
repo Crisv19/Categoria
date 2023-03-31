@@ -1,0 +1,113 @@
+﻿
+@page "/products/edit/{Id:int}"
+@using Categoria.WEB.Pages.Products;
+
+@inject NavigationManager navigationManager
+
+@inject IRepository repository
+
+@inject SweetAlertService swal
+
+<h3>Editar Producto</h3>
+
+@if (product is null)
+
+{
+
+    <p>Cargando...</p>
+
+}
+
+else
+
+{
+
+    <ProductForm @ref="productForm" Product="product" OnValidSubmit="Edit" ReturnAction="Return" />
+
+}
+
+@code {
+
+    private Product? product;
+
+    private ProductForm? productForm;
+
+    [Parameter]
+
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+
+    {
+
+        var responseHTTP = await repository.Get<Product>($"api/products/{Id}");
+
+        if (responseHTTP.Error)
+
+        {
+
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+
+            {
+
+            }
+
+            else
+
+            {
+
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+
+                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
+
+            }
+
+        }
+
+        else
+
+        {
+
+            product = responseHTTP.Response;
+
+        }
+
+    }
+
+    private async Task Edit()
+
+    {
+
+        var responseHTTP = await repository.Put("api/countries", product);
+
+        if (responseHTTP.Error)
+
+        {
+
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+
+        }
+
+        else
+
+        {
+
+            productForm!.FormPostedSuccessfully = true;
+
+            navigationManager.NavigateTo("products");
+
+        }
+
+    }
+
+    private void Return()
+
+    {
+
+        navigationManager.NavigateTo("products");
+
+    }
+
+}

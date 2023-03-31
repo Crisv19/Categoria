@@ -5,7 +5,7 @@
 namespace Categoria.API.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class InitialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

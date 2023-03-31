@@ -35,6 +35,53 @@ namespace Categoria.API.Controllers
             return Ok(await _context.Products.ToListAsync());
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id ){
+
+            var product =await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            if (product is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
+        }
+
+        //Actualizacion
+        [HttpPut]
+        public async Task<ActionResult>put(Product product)
+        {
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+            return Ok(product);
+        }
+
+
+        [HttpDelete("{id:int}")]
+
+        public async Task<ActionResult> Delete(int id)
+
+        {
+
+            var afectedRows = await _context.Products
+
+            .Where(x => x.Id == id)
+
+            .ExecuteDeleteAsync();
+
+            if (afectedRows == 0)
+
+            {
+
+                return NotFound();
+
+            }
+
+            return NoContent();
+
+        }
+
+
 
 
 

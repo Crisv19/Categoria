@@ -1,0 +1,154 @@
+﻿@page "/products"
+
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+@inject SweetAlertService swal
+
+<h3>Producto</h3>
+
+<div class="mb-3">
+
+    <a class="btn btn-primary" href="/products/create">Nuevo Producto</a>
+
+</div>
+
+<GenericList MyList="Products">
+
+    <Body>
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th></th>
+
+                    <th>Producto</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var product in Products!)
+
+                {
+
+                    <tr>
+
+                        <td>
+
+                            <a href="/products/edit/@product.Id" class="btn btn-warning"><i class="oi oi-pencil" />Editar</a>
+
+                            <button class="btn btn-danger" @onclick=@(() => DeleteAsync(product))><i class="oi oi-trash" />Borrar</button>
+
+                        </td>
+
+                        <td>
+
+                            @product.Name
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </Body>
+
+</GenericList>
+
+@code {
+
+    public List<Product>? Products { get; set; }
+
+    protected async override Task OnInitializedAsync()
+
+    {
+
+        await Load();
+
+    }
+
+    private async Task Load()
+
+    {
+
+        var responseHppt = await repository.Get<List<Product>>("api/products");
+
+        Products = responseHppt.Response!;
+
+    }
+
+    private async Task DeleteAsync(Product product)
+
+    {
+
+        var result = await swal.FireAsync(new SweetAlertOptions
+
+            {
+
+                Title = "Confirmación",
+
+                Text = "¿Esta seguro que quieres borrar el registro?",
+
+                Icon = SweetAlertIcon.Question,
+
+                ShowCancelButton = true
+
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+
+        {
+
+            return;
+
+        }
+
+        var responseHTTP = await repository.Delete($"api/products/{product.Id}");
+
+        if (responseHTTP.Error)
+
+        {
+
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+
+            {
+
+                navigationManager.NavigateTo("/");
+
+            }
+
+            else
+
+            {
+
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+
+                await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+
+            }
+
+        }
+
+        else
+
+        {
+
+            await Load();
+
+        }
+
+    }
+
+}

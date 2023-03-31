@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Categoria.Shared", "Categoria.Shared\Categoria.Shared.csproj", "{272CCA2D-9E24-4DCA-B818-B5425CB59612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Categoria.Shared", "Categoria.Shared\Categoria.Shared.csproj", "{272CCA2D-9E24-4DCA-B818-B5425CB59612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Categoria.API", "Categoria.API\Categoria.API.csproj", "{477B395E-C5F1-4D4B-9239-4753CEF3B4E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Categoria.API", "Categoria.API\Categoria.API.csproj", "{477B395E-C5F1-4D4B-9239-4753CEF3B4E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Categoria.WEB", "Categoria.WEB\Categoria.WEB.csproj", "{6CE326CD-811E-49DA-86DB-50D78BC4ACB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Categoria.WEB", "Categoria.WEB\Categoria.WEB.csproj", "{6CE326CD-811E-49DA-86DB-50D78BC4ACB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
