@@ -22,9 +22,43 @@ namespace Categoria.API.Controllers
         [HttpPost]
         public async Task<ActionResult>Post(Product product)
         {
-            _context.Add(product);
+            try
+
+            {
+                _context.Add(product);
             await _context.SaveChangesAsync();
             return Ok();
+            }
+
+            catch (DbUpdateException dbUpdateException)
+
+            {
+
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+
+                {
+
+                    return BadRequest("Ya existe un país con el mismo nombre.");
+
+                }
+
+                else
+
+                {
+
+                    return BadRequest(dbUpdateException.InnerException.Message);
+
+                }
+
+            }
+
+            catch (Exception exception)
+
+            {
+
+                return BadRequest(exception.Message);
+
+            }
 
         }
 
@@ -51,9 +85,45 @@ namespace Categoria.API.Controllers
         [HttpPut]
         public async Task<ActionResult>put(Product product)
         {
-            _context.Update(product);
+            try
+
+            {
+
+
+                _context.Update(product);
             await _context.SaveChangesAsync();
             return Ok(product);
+            }
+
+            catch (DbUpdateException dbUpdateException)
+
+            {
+
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+
+                {
+
+                    return BadRequest("Ya existe un registro con el mismo nombre.");
+
+                }
+
+                else
+
+                {
+
+                    return BadRequest(dbUpdateException.InnerException.Message);
+
+                }
+
+            }
+
+            catch (Exception exception)
+
+            {
+
+                return BadRequest(exception.Message);
+
+            }
         }
 
 
